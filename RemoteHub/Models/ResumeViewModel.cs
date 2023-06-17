@@ -27,8 +27,7 @@ namespace RemoteHub.Models
         [Required]
         [Compare("Email")]
         public string EmailConfirmation { get; set; }
-        [Required]
-        [Phone]
+        [RegularExpression(@"^\+\d{1,3}\s?\d{8,12}$", ErrorMessage = "Please enter valid phone no.")]
         public string PhoneNumber { get; set; }
         [Required]
         [Range(1,20)]

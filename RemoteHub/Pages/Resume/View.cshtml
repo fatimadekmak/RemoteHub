@@ -1,0 +1,37 @@
+﻿@page
+@model RemoteHub.Pages.Resume.ViewModel
+@{
+}
+<img src="@TempData["imagePath"]" width="150" height="180" />
+<h3>Full Name: @Model.bindingModel.FirstName @Model.bindingModel.LastName</h3>
+<small>Gender: @Model.bindingModel.Gender</small>
+<br />
+<small>Nationality: @Model.bindingModel.Nationality.First()</small>
+<br />
+<small>Birthday: @Model.bindingModel.Birthday.Day/@Model.bindingModel.Birthday.Month/@Model.bindingModel.Birthday.Year</small>
+<br />
+<b>Email:</b> @Model.bindingModel.Email
+<br />
+<b>Skills:</b>
+<ul>
+    @if (@Model.bindingModel.Python == true)
+    {
+        <li>Python</li>
+    }
+    @if (@Model.bindingModel.CPP == true)
+    {
+        <li>C++</li>
+    }
+    @if (@Model.bindingModel.Java == true)
+    {
+        <li>Java</li>
+    }
+    @if (@Model.bindingModel.ASPNET == true)
+    {
+        <li>ASP.NET</li>
+    }
+    @if (@Model.bindingModel.Springboot == true)
+    {
+        <li>Springboot</li>
+    }
+</ul>

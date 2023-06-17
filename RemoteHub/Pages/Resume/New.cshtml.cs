@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RemoteHub.Data;
 using RemoteHub.Models;
+using RemoteHub.Services;
 
 namespace RemoteHub.Pages.Resume
 {
@@ -10,6 +12,14 @@ namespace RemoteHub.Pages.Resume
         [BindProperty(Name = "viewModel")]
         public ResumeBindingModel bindingModel { get; set; }
         public ResumeViewModel viewModel { get; set; }
+
+        public AppDBContext _context { get; set; }
+
+        public NewModel(AppDBContext context)
+        {
+            _context = context;
+        }
+
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
         {
             new SelectListItem { Value = "Lebanon", Text = "Lebanon" },
@@ -32,6 +42,39 @@ namespace RemoteHub.Pages.Resume
         public string[] Genders = new[] { "Male", "Female" };
         public void OnGet()
         {
+        }
+
+        public IActionResult OnPost()
+        {
+            if (ImageUploadService.CheckExtensionValidity(bindingModel.ProfileImage) == false)
+            {
+                ModelState.AddModelError("Input.ProfileImage", "Please choose a valid image file.");
+            }
+            if (bindingModel.Number1 + bindingModel.Number2 != bindingModel.Number3)
+            {
+                ModelState.AddModelError("Input.Number3",
+                             "Incorrect Calculation");
+            }
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            TempData["imagePath"] = ImageUploadService.UploadFile(bindingModel.ProfileImage);
+            var resume = new RemoteHub.Models.Resume
+            {
+                FirstName = bindingModel.FirstName,
+                LastName = bindingModel.LastName,
+                Email = bindingModel.Email,
+                BirthDate = bindingModel.Birthday,
+                Gender = bindingModel.Gender,
+                Nationality = bindingModel.Nationality.First(),
+                ProfilePicUrl = ImageUploadService.UploadFile(bindingModel.ProfileImage),
+                PhoneNumber = bindingModel.PhoneNumber
+            };
+            _context.Resumes.Add(resume);
+            _context.SaveChanges();
+            /*Console.WriteLine(resume.ResumeId);*/
+            return RedirectToPage("view", bindingModel);
         }
     }
 }
