@@ -73,8 +73,7 @@ namespace RemoteHub.Pages.Resume
             };
             _context.Resumes.Add(resume);
             _context.SaveChanges();
-            /*Console.WriteLine(resume.ResumeId);*/
-            return RedirectToPage("view", bindingModel);
+            return RedirectToPage("view", new { resume.ResumeId } );
         }
     }
 }
