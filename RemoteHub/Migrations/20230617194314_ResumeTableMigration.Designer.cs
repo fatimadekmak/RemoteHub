@@ -12,8 +12,8 @@ using RemoteHub.Data;
 namespace RemoteHub.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230617120335_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20230617194314_ResumeTableMigration")]
+    partial class ResumeTableMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

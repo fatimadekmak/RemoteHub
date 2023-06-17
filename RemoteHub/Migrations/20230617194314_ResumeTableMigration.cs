@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RemoteHub.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class ResumeTableMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

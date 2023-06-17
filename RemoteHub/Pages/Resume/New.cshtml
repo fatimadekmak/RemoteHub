@@ -1,0 +1,97 @@
+﻿@page
+@model RemoteHub.Pages.Resume.NewModel
+@{
+}
+<h2>Fill Your information</h2>
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="viewModel.FirstName"></label>
+        <input asp-for="viewModel.FirstName" class="form-control" />
+        <span asp-validation-for="viewModel.FirstName" class="text-danger"></span>
+    </div><br />
+    <div class="form-group">
+        <label asp-for="viewModel.LastName"></label>
+        <input asp-for="viewModel.LastName" class="form-control" />
+        <span asp-validation-for="viewModel.LastName" class="text-danger"></span>
+    </div><br />
+    <div class="form-group">
+        <label asp-for="viewModel.ProfileImage" class="control-label"></label><br />
+        <input asp-for="viewModel.ProfileImage" class="custom-file-input" id="customFile"><br />
+        <span asp-validation-for="viewModel.ProfileImage" class="text-danger"></span>
+        </><br />
+        <div class="form-group">
+            <label asp-for="viewModel.Birthday"></label>
+            <input asp-for="viewModel.Birthday" class="form-control" />
+            <span asp-validation-for="viewModel.Birthday" class="text-danger"></span>
+        </div><br />
+        <div class="form-group">
+            <label asp-for="viewModel.Nationality"></label> <br />
+            <select asp-for="viewModel.Nationality" asp-items="Model.Items"></select>
+            <span asp-validation-for="viewModel.Nationality" class="text-danger"></span>
+        </div><br />
+
+        <b>Select Your Gender</b> <br />
+        @foreach (var gender in Model.Genders)
+        {
+            <input type="radio" asp-for="viewModel.Gender" value="@gender" />
+
+            @gender <br />
+        }
+        <span asp-validation-for="viewModel.Gender" class="text-danger"></span><br /><br />
+        <div class="form-group">
+            <b>Select Your skills</b> <br />
+
+            <input asp-for="viewModel.ASPNET" />
+            <label asp-for="viewModel.ASPNET"></label>
+            <span asp-validation-for="viewModel.ASPNET" class="text-danger"></span>
+            &nbsp;&nbsp;
+
+            <input asp-for="viewModel.CPP" />
+            <label asp-for="viewModel.CPP"></label>
+            <span asp-validation-for="viewModel.CPP" class="text-danger"></span>
+            &nbsp;&nbsp;
+
+            <input asp-for="viewModel.Java" />
+            <label asp-for="viewModel.Java"></label>
+            <span asp-validation-for="viewModel.Java" class="text-danger"></span>
+            &nbsp;&nbsp;
+
+            <input asp-for="viewModel.Python" />
+            <label asp-for="viewModel.Python"></label>
+            <span asp-validation-for="viewModel.Python" class="text-danger"></span>
+            &nbsp;&nbsp;
+
+            <input asp-for="viewModel.Springboot" />
+            <label asp-for="viewModel.Springboot"></label>
+            <span asp-validation-for="viewModel.Springboot" class="text-danger"></span>
+        </div><br />
+        <div class="form-group">
+            <label asp-for="viewModel.Email"></label>
+            <input asp-for="viewModel.Email" class="form-control" />
+            <span asp-validation-for="viewModel.Email" class="text-danger"></span>
+        </div><br />
+        <div class="form-group">
+            <label asp-for="viewModel.EmailConfirmation"></label>
+            <input asp-for="viewModel.EmailConfirmation" class="form-control" />
+            <span asp-validation-for="viewModel.EmailConfirmation" class="text-danger"></span>
+        </div><br />
+        <div class="form-group">
+            <label asp-for="viewModel.PhoneNumber"></label>
+            <input asp-for="viewModel.PhoneNumber" class="form-control" />
+            <span asp-validation-for="viewModel.PhoneNumber" placeholder="+961 12345678" class="text-danger"></span>
+        </div><br />
+        <div class="form-group">
+            <b>Input two numbers and their sum:</b> <br />
+            <input asp-for="viewModel.Number1" /> +
+            <input asp-for="viewModel.Number2" /> =
+            <input asp-for="viewModel.Number3" />
+
+            <span asp-validation-for="viewModel.Number3" class="text-danger"></span>
+        </div><br />
+        <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+</form>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

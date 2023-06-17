@@ -1,0 +1,15 @@
+﻿@page "{ResumeId}"
+@model RemoteHub.Pages.Resume.ViewModel
+@{
+}
+<img src="@Model.resume.ProfilePicUrl" width="150" height="180" />
+<h3>Full Name: @Model.resume.FirstName @Model.resume.LastName</h3>
+<small>Gender: @Model.resume.Gender</small>
+<br />
+<small>Nationality: @Model.resume.Nationality</small>
+<br />
+<small>Birthday: @Model.resume.BirthDate.</small>
+<br />
+<b>Email:</b> @Model.resume.Email
+<br />
+<b>Skills:</b>
