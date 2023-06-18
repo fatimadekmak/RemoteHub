@@ -12,7 +12,7 @@ using RemoteHub.Data;
 namespace RemoteHub.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230618073953_FirstMigration")]
+    [Migration("20230618142802_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
