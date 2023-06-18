@@ -17,17 +17,14 @@ namespace RemoteHub.Models
         [Required]
         public IEnumerable<String> Nationality { get; set; }
         public List<bool> Skills { get; set; }
-        /*public bool ASPNET { get; set; }
-        public bool Java { get; set; }
-        public bool Python { get; set; }
-        public bool CPP { get; set; }
-        public bool Springboot { get; set; }*/
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
         [Required]
         [Compare("Email")]
         public string EmailConfirmation { get; set; }
+        [Required]
         [RegularExpression(@"^\+\d{1,3}\s?\d{8,12}$", ErrorMessage = "Please enter valid phone no.")]
         public string PhoneNumber { get; set; }
         [Required]

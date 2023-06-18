@@ -1,6 +1,7 @@
 ﻿@page
 @model RemoteHub.Pages.Resume.NewModel
 @{
+    ViewData["Title"] = "Add Your Resume";
 }
 <h2>Fill Your information</h2>
 <form method="post" enctype="multipart/form-data">
@@ -44,33 +45,10 @@
             @for (int i = 0; i < Model.Skills.Count; i++)
             {
                 <input asp-for="viewModel.Skills[i]" />
-                <label asp-for="@Model.Skills[i]">@Model.Skills[i].SkillName</label>
+                <label asp-for="@Model.Skills[i]" style="margin-right: 20px;">@Model.Skills[i].SkillName</label>
                 <span asp-validation-for="viewModel.Skills[i]" class="text-danger"></span>
             }
 
-            @*<input asp-for="viewModel.ASPNET" />
-            <label asp-for="viewModel.ASPNET"></label>
-            <span asp-validation-for="viewModel.ASPNET" class="text-danger"></span>
-            &nbsp;&nbsp;
-
-            <input asp-for="viewModel.CPP" />
-            <label asp-for="viewModel.CPP"></label>
-            <span asp-validation-for="viewModel.CPP" class="text-danger"></span>
-            &nbsp;&nbsp;
-
-            <input asp-for="viewModel.Java" />
-            <label asp-for="viewModel.Java"></label>
-            <span asp-validation-for="viewModel.Java" class="text-danger"></span>
-            &nbsp;&nbsp;
-
-            <input asp-for="viewModel.Python" />
-            <label asp-for="viewModel.Python"></label>
-            <span asp-validation-for="viewModel.Python" class="text-danger"></span>
-            &nbsp;&nbsp;
-
-            <input asp-for="viewModel.Springboot" />
-            <label asp-for="viewModel.Springboot"></label>
-            <span asp-validation-for="viewModel.Springboot" class="text-danger"></span>*@
         </div><br />
         <div class="form-group">
             <label asp-for="viewModel.Email"></label>
