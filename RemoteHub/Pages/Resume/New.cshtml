@@ -17,7 +17,7 @@
     </div><br />
     <div class="form-group">
         <label asp-for="viewModel.ProfileImage" class="control-label"></label><br />
-        <input asp-for="viewModel.ProfileImage" class="custom-file-input" id="customFile"><br />
+        <input asp-for="viewModel.ProfileImage" class="btn btn-secondary custom-file-input" id="customFile"><br />
         <span asp-validation-for="viewModel.ProfileImage" class="text-danger"></span>
     </div><br />
         <div class="form-group">
@@ -27,7 +27,8 @@
         </div><br />
         <div class="form-group">
             <label asp-for="viewModel.Nationality"></label> <br />
-            <select asp-for="viewModel.Nationality" asp-items="Model.Items"></select><br />
+            <select asp-for="viewModel.Nationality" asp-items="Model.Items"
+                class="btn btn-secondary dropdown-toggle"></select><br />
             <span asp-validation-for="viewModel.Nationality" class="text-danger"></span>
         </div><br />
 
@@ -76,7 +77,7 @@
             <span asp-validation-for="viewModel.Number3" class="text-danger"></span>
         </div><br />
         <div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-secondary">Submit</button>
         </div>
 </form>
 @section Scripts{
