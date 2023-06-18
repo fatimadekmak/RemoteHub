@@ -66,11 +66,13 @@
             <span asp-validation-for="viewModel.PhoneNumber" placeholder="+961 12345678" class="text-danger"></span>
         </div><br />
         <div class="form-group">
-            <b>Input two numbers and their sum:</b> <br />
+            <b>Input two numbers and their sum (first Number :[1,20] and second Number:[20,50])</b> <br />
+
             <input asp-for="viewModel.Number1" /> +
             <input asp-for="viewModel.Number2" /> =
-            <input asp-for="viewModel.Number3" />
-
+            <input asp-for="viewModel.Number3" /><br />
+            <span asp-validation-for="viewModel.Number1" class="text-danger"></span><br />
+            <span asp-validation-for="viewModel.Number2" class="text-danger"></span><br />
             <span asp-validation-for="viewModel.Number3" class="text-danger"></span>
         </div><br />
         <div>

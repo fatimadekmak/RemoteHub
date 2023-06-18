@@ -25,21 +25,21 @@ namespace RemoteHub.Pages.Resume
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
         {
-            new SelectListItem { Value = "Lebanon", Text = "Lebanon" },
-            new SelectListItem { Value = "Palestine", Text = "Palestine" },
-            new SelectListItem { Value = "Syria", Text = "Syria" },
-            new SelectListItem { Value = "Egypt", Text = "Egypt" },
-            new SelectListItem { Value = "Jordan", Text = "Jordan" },
-            new SelectListItem { Value = "United States", Text = "United States" },
-            new SelectListItem { Value = "Canada", Text = "Canada" },
-            new SelectListItem { Value = "United Kingdom", Text = "United Kingdom" },
-            new SelectListItem { Value = "Germany", Text = "Germany" },
-            new SelectListItem { Value = "France", Text = "France" },
-            new SelectListItem { Value = "Australia", Text = "Australia" },
-            new SelectListItem { Value = "China", Text = "China" },
-            new SelectListItem { Value = "India", Text = "India" },
-            new SelectListItem { Value = "Brazil", Text = "Brazil" },
-            new SelectListItem { Value = "Russia", Text = "Russia" }
+            new SelectListItem { Value = "Lebanese", Text = "Lebanese" },
+            new SelectListItem { Value = "Palestinian", Text = "Palestinian" },
+            new SelectListItem { Value = "Syrian", Text = "Syrian" },
+            new SelectListItem { Value = "Egyptian", Text = "Egyptian" },
+            new SelectListItem { Value = "Jordanian", Text = "Jordanian" },
+            new SelectListItem { Value = "American", Text = "American" },
+            new SelectListItem { Value = "Canadian", Text = "Canadian" },
+            new SelectListItem { Value = "British", Text = "British" },
+            new SelectListItem { Value = "German", Text = "German" },
+            new SelectListItem { Value = "French", Text = "French" },
+            new SelectListItem { Value = "Australian", Text = "Australian" },
+            new SelectListItem { Value = "Chinese", Text = "Chinese" },
+            new SelectListItem { Value = "Indian", Text = "Indian" },
+            new SelectListItem { Value = "Brazilian", Text = "Brazilian" },
+            new SelectListItem { Value = "Russian", Text = "Russian" }
         };
 
         public string[] Genders = new[] { "Male", "Female" };
@@ -51,11 +51,19 @@ namespace RemoteHub.Pages.Resume
         {
             if (ImageUploadService.CheckExtensionValidity(bindingModel.ProfileImage) == false)
             {
-                ModelState.AddModelError("Input.ProfileImage", "Please choose a valid image file.");
+                ModelState.AddModelError("viewModel.ProfileImage", "Please choose a valid image file.");
+            }
+            if(DateService.checkIfPastDate(bindingModel.Birthday))
+            {
+                ModelState.AddModelError("viewModel.Birthday", "Choose a date in the past");
+            }
+            if(DateService.checkMinimumAge(bindingModel.Birthday))
+            {
+                ModelState.AddModelError("viewModel.Birthday", "You should be at least 14 years old");
             }
             if (bindingModel.Number1 + bindingModel.Number2 != bindingModel.Number3)
             {
-                ModelState.AddModelError("Input.Number3",
+                ModelState.AddModelError("viewModel.Number3",
                              "Incorrect Calculation");
             }
             if (!ModelState.IsValid)

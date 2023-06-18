@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using RemoteHub.Data;
 using RemoteHub.Models;
 
@@ -21,7 +22,7 @@ namespace RemoteHub.Pages.Resume
 
         public async Task<IActionResult> OnGetAsync()
         {
-            resume = await _context.Resumes.FindAsync(ResumeId);
+            resume = await _context.Resumes.Include(r => r.skills).SingleOrDefaultAsync(m=>m.ResumeId==ResumeId);
             if(resume == null)
             {
                 return NotFound();

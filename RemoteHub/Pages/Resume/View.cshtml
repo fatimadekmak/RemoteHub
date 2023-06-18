@@ -8,8 +8,16 @@
 <br />
 <small>Nationality: @Model.resume.Nationality</small>
 <br />
-<small>Birthday: @Model.resume.BirthDate.</small>
+<small>Birthday: @Model.resume.BirthDate?.ToString("yyyy-MM-dd")</small>
 <br />
 <b>Email:</b> @Model.resume.Email
 <br />
+<small>Phone Number: @Model.resume.PhoneNumber.</small>
+<br />
 <b>Skills:</b>
+<ol>
+@foreach(var skill in Model.resume.skills) 
+{
+    <li>@skill.SkillName</li>
+}
+</ol>
