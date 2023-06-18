@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using RemoteHub.Data;
 using RemoteHub.Models;
 using RemoteHub.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace RemoteHub.Pages.Resume
 {
@@ -14,10 +15,12 @@ namespace RemoteHub.Pages.Resume
         public ResumeViewModel viewModel { get; set; }
 
         public AppDBContext _context { get; set; }
+        public List<Skill> Skills { get; set; }
 
         public NewModel(AppDBContext context)
         {
             _context = context;
+            Skills = _context.Skills.ToList();
         }
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
@@ -60,7 +63,7 @@ namespace RemoteHub.Pages.Resume
                 return Page();
             }
             TempData["imagePath"] = ImageUploadService.UploadFile(bindingModel.ProfileImage);
-            var resume = new RemoteHub.Models.Resume
+            var resume = new Models.Resume
             {
                 FirstName = bindingModel.FirstName,
                 LastName = bindingModel.LastName,
@@ -69,11 +72,21 @@ namespace RemoteHub.Pages.Resume
                 Gender = bindingModel.Gender,
                 Nationality = bindingModel.Nationality.First(),
                 ProfilePicUrl = ImageUploadService.UploadFile(bindingModel.ProfileImage),
-                PhoneNumber = bindingModel.PhoneNumber
+                PhoneNumber = bindingModel.PhoneNumber,
+                skills = new List<Skill>()
             };
+            for (int i =0; i< bindingModel.Skills.Count;i++)
+            {
+                if (bindingModel.Skills[i]==true)
+                {
+                    //need to save the corresponding skill[i] as a skill
+                    resume.skills.Add(Skills[i]);
+                }
+            }
             _context.Resumes.Add(resume);
             _context.SaveChanges();
             return RedirectToPage("view", new { resume.ResumeId } );
         }
     }
+    
 }
