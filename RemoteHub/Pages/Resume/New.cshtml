@@ -19,7 +19,7 @@
         <label asp-for="viewModel.ProfileImage" class="control-label"></label><br />
         <input asp-for="viewModel.ProfileImage" class="custom-file-input" id="customFile"><br />
         <span asp-validation-for="viewModel.ProfileImage" class="text-danger"></span>
-        </><br />
+    </div><br />
         <div class="form-group">
             <label asp-for="viewModel.Birthday"></label>
             <input asp-for="viewModel.Birthday" class="form-control" />
@@ -27,7 +27,7 @@
         </div><br />
         <div class="form-group">
             <label asp-for="viewModel.Nationality"></label> <br />
-            <select asp-for="viewModel.Nationality" asp-items="Model.Items"></select>
+            <select asp-for="viewModel.Nationality" asp-items="Model.Items"></select><br />
             <span asp-validation-for="viewModel.Nationality" class="text-danger"></span>
         </div><br />
 

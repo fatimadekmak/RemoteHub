@@ -9,7 +9,7 @@ namespace RemoteHub.Models
         public string LastName { get; set; }
         public DateTime Birthday { get; set; }
         public string Gender { get; set; }
-        public IEnumerable<String> Nationality { get; set; }
+        public String Nationality { get; set; }
         public List<bool> Skills { get; set; }
         public string Email { get; set; }
         public string EmailConfirmation { get; set; }

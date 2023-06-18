@@ -1,6 +1,7 @@
 ﻿@page "{ResumeId}"
 @model RemoteHub.Pages.Resume.ViewModel
 @{
+    ViewData["Title"] = @Model.resume.FirstName + " " + @Model.resume.LastName + " Resume";
 }
 <img src="@Model.resume.ProfilePicUrl" width="150" height="180" />
 <h3>Full Name: @Model.resume.FirstName @Model.resume.LastName</h3>

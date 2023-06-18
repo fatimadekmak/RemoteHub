@@ -78,7 +78,7 @@ namespace RemoteHub.Pages.Resume
                 Email = bindingModel.Email,
                 BirthDate = bindingModel.Birthday,
                 Gender = bindingModel.Gender,
-                Nationality = bindingModel.Nationality.First(),
+                Nationality = bindingModel.Nationality,
                 ProfilePicUrl = ImageUploadService.UploadFile(bindingModel.ProfileImage),
                 PhoneNumber = bindingModel.PhoneNumber,
                 skills = new List<Skill>()
