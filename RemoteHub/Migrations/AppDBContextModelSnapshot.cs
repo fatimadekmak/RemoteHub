@@ -63,6 +63,53 @@ namespace RemoteHub.Migrations
 
                     b.ToTable("Resumes");
                 });
+
+            modelBuilder.Entity("RemoteHub.Models.Skill", b =>
+                {
+                    b.Property<int>("SkillId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SkillId"));
+
+                    b.Property<string>("SkillName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SkillId");
+
+                    b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("ResumeSkill", b =>
+                {
+                    b.Property<int>("resumesResumeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("skillsSkillId")
+                        .HasColumnType("int");
+
+                    b.HasKey("resumesResumeId", "skillsSkillId");
+
+                    b.HasIndex("skillsSkillId");
+
+                    b.ToTable("ResumeSkill");
+                });
+
+            modelBuilder.Entity("ResumeSkill", b =>
+                {
+                    b.HasOne("RemoteHub.Models.Resume", null)
+                        .WithMany()
+                        .HasForeignKey("resumesResumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RemoteHub.Models.Skill", null)
+                        .WithMany()
+                        .HasForeignKey("skillsSkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 #pragma warning restore 612, 618
         }
     }

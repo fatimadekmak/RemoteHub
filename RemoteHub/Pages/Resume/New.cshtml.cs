@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using RemoteHub.Data;
 using RemoteHub.Models;
 using RemoteHub.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace RemoteHub.Pages.Resume
 {
@@ -40,8 +41,10 @@ namespace RemoteHub.Pages.Resume
         };
 
         public string[] Genders = new[] { "Male", "Female" };
+        public List<Skill> Skills { get; set; }
         public void OnGet()
         {
+            Skills = _context.Skills.ToList();
         }
 
         public IActionResult OnPost()
@@ -76,4 +79,5 @@ namespace RemoteHub.Pages.Resume
             return RedirectToPage("view", new { resume.ResumeId } );
         }
     }
+    
 }
