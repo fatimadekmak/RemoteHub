@@ -49,7 +49,7 @@ namespace RemoteHub.Pages.Resume
 
         public IActionResult OnPost()
         {
-            if (ImageUploadService.CheckExtensionValidity(bindingModel.ProfileImage) == false)
+            if (bindingModel.ProfileImage!=null && ImageUploadService.CheckExtensionValidity(bindingModel.ProfileImage) == false)
             {
                 ModelState.AddModelError("viewModel.ProfileImage", "Please choose a valid image file.");
             }
@@ -70,7 +70,6 @@ namespace RemoteHub.Pages.Resume
             {
                 return Page();
             }
-            TempData["imagePath"] = ImageUploadService.UploadFile(bindingModel.ProfileImage);
             var resume = new Models.Resume
             {
                 FirstName = bindingModel.FirstName,
@@ -79,8 +78,8 @@ namespace RemoteHub.Pages.Resume
                 BirthDate = bindingModel.Birthday,
                 Gender = bindingModel.Gender,
                 Nationality = bindingModel.Nationality,
-                ProfilePicUrl = ImageUploadService.UploadFile(bindingModel.ProfileImage),
                 PhoneNumber = bindingModel.PhoneNumber,
+                ProfilePicUrl = bindingModel.ProfileImage != null ? ImageUploadService.UploadFile(bindingModel.ProfileImage) : null,
                 skills = new List<Skill>()
             };
             for (int i =0; i< bindingModel.Skills.Count;i++)

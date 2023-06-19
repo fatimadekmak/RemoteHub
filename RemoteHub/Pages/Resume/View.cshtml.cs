@@ -23,7 +23,7 @@ namespace RemoteHub.Pages.Resume
         public async Task<IActionResult> OnGetAsync()
         {
             resume = await _context.Resumes.Include(r => r.skills).SingleOrDefaultAsync(m=>m.ResumeId==ResumeId);
-            if(resume == null)
+            if (resume == null)
             {
                 return NotFound();
             }
