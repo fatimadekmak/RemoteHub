@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Add Your Resume";
 }
-<h2>Fill Your information</h2>
+<h1>Fill Your information</h1>
+<hr />
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="viewModel.FirstName"></label>
@@ -27,13 +28,13 @@
         </div><br />
         <div class="form-group">
             <label asp-for="viewModel.Nationality"></label> <br />
-            <select asp-for="viewModel.Nationality" asp-items="Model.Items"
+            <select asp-for="viewModel.Nationality" asp-items="Model.viewModel.Items"
                 class="btn btn-secondary dropdown-toggle"></select><br />
             <span asp-validation-for="viewModel.Nationality" class="text-danger"></span>
         </div><br />
 
         <b>Select Your Gender</b> <br />
-        @foreach (var gender in Model.Genders)
+        @foreach (var gender in Model.viewModel.Genders)
         {
             <input type="radio" asp-for="viewModel.Gender" value="@gender" />
 
