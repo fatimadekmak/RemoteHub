@@ -92,7 +92,7 @@ namespace RemoteHub.Pages.Resume
             }
             _context.Resumes.Add(resume);
             _context.SaveChanges();
-            return RedirectToPage("view", new { resume.ResumeId } );
+            return RedirectToPage("view", new { Id = resume.ResumeId } );
         }
     }
     

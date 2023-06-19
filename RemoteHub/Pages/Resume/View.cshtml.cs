@@ -16,13 +16,13 @@ namespace RemoteHub.Pages.Resume
         }
 
         [BindProperty(SupportsGet =true)]
-        public int ResumeId { get; set; }
+        public int Id { get; set; }
 
         public Models.Resume resume { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            resume = await _context.Resumes.Include(r => r.skills).SingleOrDefaultAsync(m=>m.ResumeId==ResumeId);
+            resume = await _context.Resumes.Include(r => r.skills).SingleOrDefaultAsync(m=>m.ResumeId==Id);
             if (resume == null)
             {
                 return NotFound();

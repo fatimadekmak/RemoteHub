@@ -1,0 +1,47 @@
+﻿@page
+@model RemoteHub.Pages.Resume.ViewAllModel
+@{
+    ViewData["Title"] = "All Resumes";
+}
+
+<h1>Check Variety of Resumes of Skilled and professional people</h1>
+
+<p>
+    <a class="btn btn-secondary" asp-page="New">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Full Name
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Resumes[0].Grade)*@
+                Grade
+            </th>            
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Resumes)
+        {
+        <tr>
+            <td>
+                <a class="link-dark" asp-page="view" asp-route-Id="@item.ResumeId">
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </a>
+            </td>
+            <td>
+                //Grade
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ResumeId">Edit</a> |
+                <a class="link-danger" asp-page="./Delete" asp-route-id="@item.ResumeId">Delete</a> | 
+                <a asp-page="" asp-route-id="">Download</a>
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
