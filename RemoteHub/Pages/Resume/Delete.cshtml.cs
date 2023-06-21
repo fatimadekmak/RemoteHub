@@ -41,8 +41,8 @@ namespace RemoteHub.Pages.Resume
             {
                 _context.Resumes.Remove(Resume);
                 await _context.SaveChangesAsync();
+                TempData["DeleteAlertMessage"] = "Resume was successfully deleted.";
             }
-            
             return RedirectToPage("/Index");
         }
     }

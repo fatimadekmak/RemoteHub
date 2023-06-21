@@ -3,6 +3,15 @@
 @{
     ViewData["Title"] = @Model.resume.FirstName + " " + @Model.resume.LastName + " Resume";
 }
+@if (TempData["NewAlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["NewAlertMessage"]
+        <button type="button" class="close" data-dismiss="alert">
+            &times;
+        </button>
+    </div>
+}
 @if(Model.resume.ProfilePicUrl != null)
 {
     <img src="@Model.resume.ProfilePicUrl" width="150" height="180" /><br />
@@ -31,3 +40,7 @@
     <li>@skill.SkillName</li>
 }
 </ol>
+<div>
+    <a class="link-secondary" asp-page="Edit" asp-route-id="@Model.resume?.ResumeId">Edit</a> |
+    <a class="link-secondary" asp-page="ViewAll">Back to List</a>
+</div>
