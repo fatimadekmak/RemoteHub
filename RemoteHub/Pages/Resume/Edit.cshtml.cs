@@ -66,7 +66,7 @@ namespace RemoteHub.Pages.Resume
             SelectedSkills = Resume.skills;
             viewModel = new EditViewModel
             {
-                /*ResumeId = Resume.ResumeId,*/
+                ResumeId = resume.ResumeId,
                 FirstName = Resume.FirstName,
                 LastName = Resume.LastName,
                 BirthDate = Resume.BirthDate,
@@ -119,38 +119,35 @@ namespace RemoteHub.Pages.Resume
                 }*/
                 return Page();
             }
-            Resume = new Models.Resume
-            {
-                /*ResumeId = viewModel.ResumeId,*/
-                FirstName = viewModel.FirstName,
-                LastName = viewModel.LastName,
-                BirthDate = viewModel.BirthDate,
-                Gender = viewModel.Gender,
-                Nationality = viewModel.Nationality,
-                Email = viewModel.Email,
-                PhoneNumber = viewModel.PhoneNumber,
-                skills = new List<Skill>()
-        };
+            var resume = await _context.Resumes.Include(r => r.skills).FirstOrDefaultAsync(m => m.ResumeId == viewModel.ResumeId);
+
+            resume.FirstName = viewModel.FirstName;
+            resume.LastName = viewModel.LastName;
+            resume.BirthDate = viewModel.BirthDate;
+            resume.Gender = viewModel.Gender;
+            resume.Nationality = viewModel.Nationality;
+            resume.Email = viewModel.Email;
+            resume.PhoneNumber = viewModel.PhoneNumber;
+            resume.skills.Clear();
             if(viewModel.ProfileImage!=null)
             {
-                Resume.ProfilePicUrl = ImageUploadService.UploadFile(viewModel.ProfileImage);
+                resume.ProfilePicUrl = ImageUploadService.UploadFile(viewModel.ProfileImage);
             }
             else
             {
-                Resume.ProfilePicUrl = oldImage;
+                resume.ProfilePicUrl = oldImage;
             }
             for (int i = 0; i < viewModel.Skills.Count; i++)
             {
                 if (viewModel.Skills[i] == true)
                 {
                     //need to save the corresponding skill[i] as a skill
-                    Resume.skills.Add(AllSkills[i]);
+                    resume.skills.Add(AllSkills[i]);
                 }
             }
-            _context.Resumes.Add(Resume);
             await _context.SaveChangesAsync();
             
-            return RedirectToPage("view", new { Id = Resume.ResumeId });
+            return RedirectToPage("view", new { Id = resume.ResumeId });
         }
     }
     public class EditViewModel
