@@ -28,13 +28,13 @@
         </div><br />
         <div class="form-group">
             <label asp-for="viewModel.Nationality"></label> <br />
-            <select asp-for="viewModel.Nationality" asp-items="Model.viewModel.Items"
+            <select asp-for="viewModel.Nationality" asp-items="Model.Items"
                 class="btn btn-secondary dropdown-toggle"></select><br />
             <span asp-validation-for="viewModel.Nationality" class="text-danger"></span>
         </div><br />
 
         <b>Select Your Gender</b> <br />
-        @foreach (var gender in Model.viewModel.Genders)
+        @foreach (var gender in Model.Genders)
         {
             <input type="radio" asp-for="viewModel.Gender" value="@gender" />
 

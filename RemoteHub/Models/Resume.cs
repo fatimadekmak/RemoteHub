@@ -14,6 +14,6 @@ namespace RemoteHub.Models
         public string? ProfilePicUrl { get; set; }
         public string Email { get; set;}
         public string? PhoneNumber { get; set; }
-        public ICollection<Skill>? skills { get; set; }
+        public ICollection<ResumeSkill>? skills { get; set; }
     }
 }

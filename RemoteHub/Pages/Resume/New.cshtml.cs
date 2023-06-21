@@ -17,6 +17,27 @@ namespace RemoteHub.Pages.Resume
         public AppDBContext _context { get; set; }
         public List<Skill> Skills { get; set; }
 
+        public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
+        {
+            new SelectListItem { Value = "Lebanese", Text = "Lebanese" },
+            new SelectListItem { Value = "Palestinian", Text = "Palestinian" },
+            new SelectListItem { Value = "Syrian", Text = "Syrian" },
+            new SelectListItem { Value = "Egyptian", Text = "Egyptian" },
+            new SelectListItem { Value = "Jordanian", Text = "Jordanian" },
+            new SelectListItem { Value = "American", Text = "American" },
+            new SelectListItem { Value = "Canadian", Text = "Canadian" },
+            new SelectListItem { Value = "British", Text = "British" },
+            new SelectListItem { Value = "German", Text = "German" },
+            new SelectListItem { Value = "French", Text = "French" },
+            new SelectListItem { Value = "Australian", Text = "Australian" },
+            new SelectListItem { Value = "Chinese", Text = "Chinese" },
+            new SelectListItem { Value = "Indian", Text = "Indian" },
+            new SelectListItem { Value = "Brazilian", Text = "Brazilian" },
+            new SelectListItem { Value = "Russian", Text = "Russian" }
+        };
+
+        public string[] Genders = new[] { "Male", "Female" };
+
         public NewModel(AppDBContext context)
         {
             _context = context;
@@ -59,14 +80,20 @@ namespace RemoteHub.Pages.Resume
                 Nationality = bindingModel.Nationality,
                 PhoneNumber = bindingModel.PhoneNumber,
                 ProfilePicUrl = bindingModel.ProfileImage != null ? ImageUploadService.UploadFile(bindingModel.ProfileImage) : null,
-                skills = new List<Skill>()
+                skills = new List<ResumeSkill>()
             };
             for (int i =0; i< bindingModel.Skills.Count;i++)
             {
                 if (bindingModel.Skills[i]==true)
                 {
                     //need to save the corresponding skill[i] as a skill
-                    resume.skills.Add(Skills[i]);
+                    resume.skills.Add(
+                        new ResumeSkill
+                        {
+                            Resume = resume,
+                            Skill = Skills[i]
+                        }
+                        );
                 }
             }
             _context.Resumes.Add(resume);

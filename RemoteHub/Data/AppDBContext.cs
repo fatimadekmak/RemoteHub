@@ -11,6 +11,10 @@ namespace RemoteHub.Data
         public DbSet<Resume> Resumes { get; set; }
         public DbSet<Skill> Skills { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ResumeSkill>()
+                .HasKey(x => new { x.ResumeId, x.SkillId });
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace RemoteHub.Pages.Resume
         [BindProperty]
         public EditViewModel viewModel { get; set; }
         public Models.Resume Resume { get; set; } = default!;
-        public ICollection<Models.Skill> SelectedSkills { get; set; }
+        public List<int> SelectedSkills { get; set; }
         public static string oldImage { get; set; }
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
@@ -63,10 +63,14 @@ namespace RemoteHub.Pages.Resume
             }
             Resume = resume;
             oldImage = Resume.ProfilePicUrl;
-            SelectedSkills = Resume.skills;
+            SelectedSkills = new List<int>();
+            foreach(var s in Resume.skills)
+            {
+                SelectedSkills.Add(s.SkillId);
+            }
             viewModel = new EditViewModel
             {
-                /*ResumeId = Resume.ResumeId,*/
+                ResumeId = Resume.ResumeId,
                 FirstName = Resume.FirstName,
                 LastName = Resume.LastName,
                 BirthDate = Resume.BirthDate,
@@ -78,7 +82,7 @@ namespace RemoteHub.Pages.Resume
             viewModel.Skills = new List<bool>();
             foreach(var skill in AllSkills)
             {
-                if(SelectedSkills.Contains(skill))
+                if(SelectedSkills.Contains(skill.SkillId))
                 {
                     viewModel.Skills.Add(true);
                 }
@@ -119,9 +123,20 @@ namespace RemoteHub.Pages.Resume
                 }*/
                 return Page();
             }
-            Resume = new Models.Resume
+            var resume = await _context.Resumes.Include(r => r.skills).FirstOrDefaultAsync(m => m.ResumeId == viewModel.ResumeId);
+            
+                resume.FirstName = viewModel.FirstName;
+                resume.LastName = viewModel.LastName;
+                resume.BirthDate = viewModel.BirthDate;
+                resume.Gender = viewModel.Gender;
+                resume.Nationality = viewModel.Nationality;
+                resume.Email = viewModel.Email;
+                resume.PhoneNumber = viewModel.PhoneNumber;
+            resume.skills.Clear();
+
+            /*Resume = new Models.Resume
             {
-                /*ResumeId = viewModel.ResumeId,*/
+                ResumeId = viewModel.ResumeId,
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
                 BirthDate = viewModel.BirthDate,
@@ -129,28 +144,34 @@ namespace RemoteHub.Pages.Resume
                 Nationality = viewModel.Nationality,
                 Email = viewModel.Email,
                 PhoneNumber = viewModel.PhoneNumber,
-                skills = new List<Skill>()
-        };
-            if(viewModel.ProfileImage!=null)
+                skills = new List<ResumeSkill>()
+            };*/
+            if (viewModel.ProfileImage!=null)
             {
-                Resume.ProfilePicUrl = ImageUploadService.UploadFile(viewModel.ProfileImage);
+                resume.ProfilePicUrl = ImageUploadService.UploadFile(viewModel.ProfileImage);
             }
             else
             {
-                Resume.ProfilePicUrl = oldImage;
+                resume.ProfilePicUrl = oldImage;
             }
+            //should delete existing skills first
             for (int i = 0; i < viewModel.Skills.Count; i++)
             {
                 if (viewModel.Skills[i] == true)
                 {
                     //need to save the corresponding skill[i] as a skill
-                    Resume.skills.Add(AllSkills[i]);
+                    resume.skills.Add(
+                        new ResumeSkill
+                        {
+                            Resume = resume,
+                            Skill = AllSkills[i]
+                        }
+                        );
                 }
             }
-            _context.Resumes.Add(Resume);
             await _context.SaveChangesAsync();
             
-            return RedirectToPage("view", new { Id = Resume.ResumeId });
+            return RedirectToPage("view", new { Id = resume.ResumeId });
         }
     }
     public class EditViewModel
