@@ -146,7 +146,8 @@ namespace RemoteHub.Pages.Resume
                 }
             }
             await _context.SaveChangesAsync();
-            
+            @TempData["NewAlertMessage"] = "Your resume was successfully updated!";
+
             return RedirectToPage("view", new { Id = resume.ResumeId });
         }
     }
