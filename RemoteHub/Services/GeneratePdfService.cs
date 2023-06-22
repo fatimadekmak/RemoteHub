@@ -2,6 +2,7 @@
 using iTextSharp.text;
 using RemoteHub.Models;
 using Microsoft.IdentityModel.Tokens;
+using Azure;
 
 namespace RemoteHub.Services
 {
@@ -9,15 +10,16 @@ namespace RemoteHub.Services
     {
         private Resume _resume { get; set; }
         private Document doc { get; set; }
+        private string filePath { get; set; }
         public GeneratePdfService() 
         { 
             
         }
 
-        public void GeneratePdf(Resume resume)
+        public void GeneratePdf(Resume resume, string path)
         {
             _resume = resume;
-            string filePath = "wwwroot/resumes/" + _resume.FirstName + _resume.LastName + _resume.ResumeId + "_Resume.pdf";
+            string filePath = path;
             if (File.Exists(filePath))
             {
                 // Delete the existing file
@@ -102,5 +104,6 @@ namespace RemoteHub.Services
             doc.Add(unorderedList);
 
         }
+
     }
 }
