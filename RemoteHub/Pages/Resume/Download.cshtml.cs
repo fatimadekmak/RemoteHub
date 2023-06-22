@@ -6,10 +6,12 @@ using Azure;
 using Microsoft.AspNetCore.Mvc;
 using RemoteHub.Models;
 
+
 namespace RemoteHub.Pages.Resume
 {
     public class DownloadModel : PageModel
     {
+
         private readonly AppDBContext _context; 
         private readonly GeneratePdfService _generatepdf;
         public DownloadModel(AppDBContext context, GeneratePdfService generatePdfService)
@@ -33,3 +35,4 @@ namespace RemoteHub.Pages.Resume
         }
     }
 }
+
