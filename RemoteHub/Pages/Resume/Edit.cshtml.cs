@@ -106,17 +106,6 @@ namespace RemoteHub.Pages.Resume
             }
             if (!ModelState.IsValid)
             {
-                /*foreach (var modelStateEntry in ModelState)
-                {
-                    string key = modelStateEntry.Key; // Field/property name
-                    var errors = modelStateEntry.Value.Errors; // Collection of errors for the field/property
-
-                    foreach (var error in errors)
-                    {
-                        string errorMessage = error.ErrorMessage; // Error message
-                        Console.WriteLine($"Error in {key}: {errorMessage}");
-                    }
-                }*/
                 return Page();
             }
             var resume = await _context.Resumes.Include(r => r.skills).FirstOrDefaultAsync(m => m.ResumeId == viewModel.ResumeId);
@@ -129,6 +118,8 @@ namespace RemoteHub.Pages.Resume
             resume.Email = viewModel.Email;
             resume.PhoneNumber = viewModel.PhoneNumber;
             resume.skills.Clear();
+            resume.grade = 0;
+
             if(viewModel.ProfileImage!=null)
             {
                 resume.ProfilePicUrl = ImageUploadService.UploadFile(viewModel.ProfileImage);
@@ -137,12 +128,22 @@ namespace RemoteHub.Pages.Resume
             {
                 resume.ProfilePicUrl = oldImage;
             }
+            var increment = 0;
+            if (viewModel.Gender.Equals("Female"))
+            {
+                increment = 10;
+            }
+            else
+            {
+                increment = 5;
+            }
             for (int i = 0; i < viewModel.Skills.Count; i++)
             {
                 if (viewModel.Skills[i] == true)
                 {
                     //need to save the corresponding skill[i] as a skill
                     resume.skills.Add(AllSkills[i]);
+                    resume.grade += increment;
                 }
             }
             await _context.SaveChangesAsync();

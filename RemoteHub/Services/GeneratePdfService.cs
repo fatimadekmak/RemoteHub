@@ -71,6 +71,7 @@ namespace RemoteHub.Services
             {
                 doc.Add(new Paragraph("Phone Number: "+_resume.PhoneNumber, new Font(Font.FontFamily.HELVETICA, 10)));
             }
+            doc.Add(new Paragraph("Grade " + _resume.grade, new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.GREEN)));
         }
 
         public void AddImage()
@@ -85,7 +86,7 @@ namespace RemoteHub.Services
 
         public void AddSkills()
         {
-            doc.Add(new Paragraph("Skills:", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            doc.Add(new Paragraph("Skills:", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.DARK_GRAY)));
             if (_resume.skills.IsNullOrEmpty())
             {
                 Paragraph p = new Paragraph("None.");
