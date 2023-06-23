@@ -16,8 +16,7 @@
                 Full Name
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Resumes[0].Grade)*@
-                Grade
+                @Html.DisplayNameFor(model => model.Resumes[0].grade)
             </th>            
             <th>Actions</th>
         </tr>
@@ -32,8 +31,8 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </a>
             </td>
-            <td>
-                //Grade
+            <td style="color:palevioletred">
+                @Html.DisplayFor(modelItem => item.grade)
             </td>
             <td>
                     <a class="link-secondary" asp-page="./Edit" asp-route-id="@item.ResumeId">Edit</a> |

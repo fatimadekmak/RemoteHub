@@ -79,14 +79,25 @@ namespace RemoteHub.Pages.Resume
                 Nationality = bindingModel.Nationality,
                 PhoneNumber = bindingModel.PhoneNumber,
                 ProfilePicUrl = bindingModel.ProfileImage != null ? ImageUploadService.UploadFile(bindingModel.ProfileImage) : null,
-                skills = new List<Skill>()
+                skills = new List<Skill>(),
+                grade = 0
             };
+            var increment = 0;
+            if(bindingModel.Gender.Equals("Female"))
+            {
+                increment = 10;
+            }
+            else
+            {
+                increment = 5;
+            }
             for (int i =0; i< bindingModel.Skills.Count;i++)
             {
                 if (bindingModel.Skills[i]==true)
                 {
                     //need to save the corresponding skill[i] as a skill
                     resume.skills.Add(Skills[i]);
+                    resume.grade += increment;
                 }
             }
             _context.Resumes.Add(resume);

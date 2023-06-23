@@ -15,5 +15,6 @@ namespace RemoteHub.Models
         public string Email { get; set;}
         public string? PhoneNumber { get; set; }
         public ICollection<Skill>? skills { get; set; }
+        public int? grade { get; set; }
     }
 }
