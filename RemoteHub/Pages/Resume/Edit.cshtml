@@ -11,6 +11,16 @@
     <div class="col">
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (Model.viewModel.ProfileImageURL != null)
+            {
+                <img src="@Model.viewModel.ProfileImageURL" width="150" height="180" />
+
+                <br />
+                <input asp-for="viewModel.RemoveProfileImage" />
+                <label asp-for="viewModel.RemoveProfileImage"></label>
+            }
+
             <input type="hidden" asp-for="viewModel.ResumeId" />
             <div class="form-group">
                 <label asp-for="viewModel.FirstName"></label>

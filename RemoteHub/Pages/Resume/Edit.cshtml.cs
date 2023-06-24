@@ -27,7 +27,7 @@ namespace RemoteHub.Pages.Resume
         public EditViewModel viewModel { get; set; }
         public Models.Resume Resume { get; set; } = default!;
         public ICollection<Skill> SelectedSkills { get; set; }
-        public static string oldImage { get; set; }
+        /*public static string oldImage { get; set; }*/
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
         {
@@ -63,7 +63,7 @@ namespace RemoteHub.Pages.Resume
                 return NotFound();
             }
             Resume = resume;
-            oldImage = Resume.ProfilePicUrl;
+            /*oldImage = Resume.ProfilePicUrl;*/
             SelectedSkills = Resume.skills;
 
             viewModel = new EditViewModel
@@ -75,7 +75,9 @@ namespace RemoteHub.Pages.Resume
                 Gender = Resume.Gender,
                 Nationality = Resume.Nationality,
                 Email = Resume.Email,
-                PhoneNumber = Resume.PhoneNumber
+                PhoneNumber = Resume.PhoneNumber,
+                ProfileImageURL = Resume.ProfilePicUrl,
+                RemoveProfileImage = false
             };
             viewModel.Skills = new List<bool>();
             foreach(var skill in AllSkills)
@@ -108,6 +110,17 @@ namespace RemoteHub.Pages.Resume
             }
             if (!ModelState.IsValid)
             {
+                foreach (var modelStateEntry in ModelState)
+                {
+                    string key = modelStateEntry.Key; // Field/property name
+                    var errors = modelStateEntry.Value.Errors; // Collection of errors for the field/property
+
+                    foreach (var error in errors)
+                    {
+                        string errorMessage = error.ErrorMessage; // Error message
+                        Console.WriteLine($"Error in {key}: {errorMessage}");
+                    }
+                }
                 return Page();
             }
 
@@ -130,7 +143,8 @@ namespace RemoteHub.Pages.Resume
             }
             else
             {
-                resume.ProfilePicUrl = oldImage;
+                if(viewModel.RemoveProfileImage==true)
+                    resume.ProfilePicUrl = null;
             }
             var increment = 0;
             if (viewModel.Gender.Equals("Female"))
@@ -157,22 +171,31 @@ namespace RemoteHub.Pages.Resume
 
             return RedirectToPage("view", new { Id = resume.ResumeId });
         }
+
     }
     public class EditViewModel
     {
         public int ResumeId { get; set; }
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [DataType(DataType.Date)]
+        [Display(Name = "Birth Date")]
         public DateTime? BirthDate { get; set; }
         public string Gender { get; set; }
         public string Nationality { get; set; }
+        [Display(Name = "Change your profile picture")]
         public IFormFile? ProfileImage { get; set; }
+        public string? ProfileImageURL { get; set; }
+        [Display(Name = "Wanna remove Your Profile Picture?")]
+        public bool RemoveProfileImage { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        [Display(Name = "Phone Number")]
         public string? PhoneNumber { get; set; }
         public List<bool> Skills { get; set; }
     }
