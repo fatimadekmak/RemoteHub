@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using RemoteHub.Data;
 using RemoteHub.Models;
 using RemoteHub.Services;
@@ -12,21 +13,21 @@ namespace RemoteHub.Pages.Resume
 {
     public class EditModel : PageModel
     {
-        private readonly AppDBContext _context;
+        private readonly DBRepository _repository;
         public List<Models.Skill> AllSkills { get; set; }
 
-        public EditModel(AppDBContext context)
+        public EditModel(DBRepository repository)
         {
-            _context = context;
-            AllSkills = _context.Skills.ToList();
+            _repository = repository;
+            AllSkills = _repository.GetAllSkills();
         }
 
         
         [BindProperty]
         public EditViewModel viewModel { get; set; }
         public Models.Resume Resume { get; set; } = default!;
-        public ICollection<Models.Skill> SelectedSkills { get; set; }
-        public static string oldImage { get; set; }
+        public ICollection<Skill> SelectedSkills { get; set; }
+        /*public static string oldImage { get; set; }*/
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
         {
@@ -51,19 +52,20 @@ namespace RemoteHub.Pages.Resume
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Resumes == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var resume = await _context.Resumes.Include(r => r.skills).FirstOrDefaultAsync(m => m.ResumeId == id);
+            var resume = _repository.GetResumeWithSkillsById(id);
             if (resume == null)
             {
                 return NotFound();
             }
             Resume = resume;
-            oldImage = Resume.ProfilePicUrl;
+            /*oldImage = Resume.ProfilePicUrl;*/
             SelectedSkills = Resume.skills;
+
             viewModel = new EditViewModel
             {
                 ResumeId = resume.ResumeId,
@@ -73,7 +75,9 @@ namespace RemoteHub.Pages.Resume
                 Gender = Resume.Gender,
                 Nationality = Resume.Nationality,
                 Email = Resume.Email,
-                PhoneNumber = Resume.PhoneNumber
+                PhoneNumber = Resume.PhoneNumber,
+                ProfileImageURL = Resume.ProfilePicUrl,
+                RemoveProfileImage = false
             };
             viewModel.Skills = new List<bool>();
             foreach(var skill in AllSkills)
@@ -106,9 +110,22 @@ namespace RemoteHub.Pages.Resume
             }
             if (!ModelState.IsValid)
             {
+                foreach (var modelStateEntry in ModelState)
+                {
+                    string key = modelStateEntry.Key; // Field/property name
+                    var errors = modelStateEntry.Value.Errors; // Collection of errors for the field/property
+
+                    foreach (var error in errors)
+                    {
+                        string errorMessage = error.ErrorMessage; // Error message
+                        Console.WriteLine($"Error in {key}: {errorMessage}");
+                    }
+                }
                 return Page();
             }
-            var resume = await _context.Resumes.Include(r => r.skills).FirstOrDefaultAsync(m => m.ResumeId == viewModel.ResumeId);
+
+            var resume = _repository.GetResumeWithSkillsById(viewModel.ResumeId);
+
 
             resume.FirstName = viewModel.FirstName;
             resume.LastName = viewModel.LastName;
@@ -126,7 +143,8 @@ namespace RemoteHub.Pages.Resume
             }
             else
             {
-                resume.ProfilePicUrl = oldImage;
+                if(viewModel.RemoveProfileImage==true)
+                    resume.ProfilePicUrl = null;
             }
             var increment = 0;
             if (viewModel.Gender.Equals("Female"))
@@ -146,27 +164,38 @@ namespace RemoteHub.Pages.Resume
                     resume.grade += increment;
                 }
             }
-            await _context.SaveChangesAsync();
+
+            await _repository.UpdateResume(resume);
+
             @TempData["NewAlertMessage"] = "Your resume was successfully updated!";
 
             return RedirectToPage("view", new { Id = resume.ResumeId });
         }
+
     }
     public class EditViewModel
     {
         public int ResumeId { get; set; }
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [DataType(DataType.Date)]
+        [Display(Name = "Birth Date")]
         public DateTime? BirthDate { get; set; }
         public string Gender { get; set; }
         public string Nationality { get; set; }
+        [Display(Name = "Change your profile picture")]
         public IFormFile? ProfileImage { get; set; }
+        public string? ProfileImageURL { get; set; }
+        [Display(Name = "Wanna remove Your Profile Picture?")]
+        public bool RemoveProfileImage { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        [Display(Name = "Phone Number")]
         public string? PhoneNumber { get; set; }
         public List<bool> Skills { get; set; }
     }

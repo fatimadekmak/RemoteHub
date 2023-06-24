@@ -2,24 +2,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RemoteHub.Data;
+using RemoteHub.Services;
 
 namespace RemoteHub.Pages.Resume
 {
     public class ViewAllModel : PageModel
     {
-        private readonly AppDBContext _context;
-
-        public ViewAllModel(AppDBContext context)
+        private readonly DBRepository _repository;
+        public ViewAllModel(DBRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
+        
         public IList<Models.Resume> Resumes { get; set; } = default!;
         public async Task OnGet()
-        {
-            if (_context.Resumes != null)
-            {
-                Resumes = await _context.Resumes.ToListAsync();
-            }
+        { 
+            Resumes = _repository.GetAllResumes();
         }
     }
 }

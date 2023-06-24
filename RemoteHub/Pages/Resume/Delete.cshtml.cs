@@ -1,27 +1,27 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using RemoteHub.Data;
-using RemoteHub.Models;
+using NuGet.Protocol.Core.Types;
+using RemoteHub.Services;
 
 namespace RemoteHub.Pages.Resume
 {
     public class DeleteModel : PageModel
     {
-        private readonly AppDBContext _context;
-        public DeleteModel(AppDBContext context)
+        private readonly DBRepository _repository;
+        public DeleteModel(DBRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
         [BindProperty]
         public Models.Resume Resume { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if(id==null || _context.Resumes == null)
+            if(id==null)
             {
                 return NotFound();
             }
-            Resume = await _context.Resumes.SingleOrDefaultAsync(r => r.ResumeId == id);
+            Resume = _repository.GetResumeById(id);
             if(Resume == null)
             {
                 return NotFound();
@@ -31,19 +31,13 @@ namespace RemoteHub.Pages.Resume
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (Resume.ResumeId == null || _context.Resumes == null)
+            if (Resume.ResumeId != null)
             {
-                return NotFound();
+                await _repository.DeleteResume(Resume.ResumeId);
+                TempData["DeleteAlertMessage"] = "Resume was deleted successfully!";
+                return RedirectToPage("ViewAll");
             }
-            Resume = await _context.Resumes.FindAsync(Resume.ResumeId);
-
-            if(Resume!=null)
-            {
-                _context.Resumes.Remove(Resume);
-                await _context.SaveChangesAsync();
-                TempData["DeleteAlertMessage"] = "Resume was successfully deleted.";
-            }
-            return RedirectToPage("/Index");
+            return NotFound();
         }
     }
 }
