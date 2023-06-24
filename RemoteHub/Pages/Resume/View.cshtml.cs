@@ -3,16 +3,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RemoteHub.Data;
 using RemoteHub.Models;
+using RemoteHub.Services;
 
 namespace RemoteHub.Pages.Resume
 {
     public class ViewModel : PageModel
     {
-        private readonly AppDBContext _context;
-
-        public ViewModel(AppDBContext context)
+        private readonly DBRepository _repository;
+        public ViewModel(DBRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [BindProperty(SupportsGet =true)]
@@ -22,7 +22,7 @@ namespace RemoteHub.Pages.Resume
 
         public async Task<IActionResult> OnGetAsync()
         {
-            resume = await _context.Resumes.Include(r => r.skills).SingleOrDefaultAsync(m=>m.ResumeId==Id);
+            resume = _repository.GetResumeWithSkillsById(Id);
             if (resume == null)
             {
                 return NotFound();

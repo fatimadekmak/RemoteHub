@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using RemoteHub.Data;
 using RemoteHub.Models;
 using RemoteHub.Services;
@@ -12,20 +13,20 @@ namespace RemoteHub.Pages.Resume
 {
     public class EditModel : PageModel
     {
-        private readonly AppDBContext _context;
+        private readonly DBRepository _repository;
         public List<Models.Skill> AllSkills { get; set; }
 
-        public EditModel(AppDBContext context)
+        public EditModel(DBRepository repository)
         {
-            _context = context;
-            AllSkills = _context.Skills.ToList();
+            _repository = repository;
+            AllSkills = _repository.GetAllSkills();
         }
 
         
         [BindProperty]
         public EditViewModel viewModel { get; set; }
         public Models.Resume Resume { get; set; } = default!;
-        public ICollection<Models.Skill> SelectedSkills { get; set; }
+        public ICollection<Skill> SelectedSkills { get; set; }
         public static string oldImage { get; set; }
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
@@ -51,12 +52,12 @@ namespace RemoteHub.Pages.Resume
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Resumes == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var resume = await _context.Resumes.Include(r => r.skills).FirstOrDefaultAsync(m => m.ResumeId == id);
+            var resume = _repository.GetResumeWithSkillsById(id);
             if (resume == null)
             {
                 return NotFound();
@@ -64,6 +65,7 @@ namespace RemoteHub.Pages.Resume
             Resume = resume;
             oldImage = Resume.ProfilePicUrl;
             SelectedSkills = Resume.skills;
+
             viewModel = new EditViewModel
             {
                 ResumeId = resume.ResumeId,
@@ -108,7 +110,9 @@ namespace RemoteHub.Pages.Resume
             {
                 return Page();
             }
-            var resume = await _context.Resumes.Include(r => r.skills).FirstOrDefaultAsync(m => m.ResumeId == viewModel.ResumeId);
+
+            var resume = _repository.GetResumeWithSkillsById(viewModel.ResumeId);
+
 
             resume.FirstName = viewModel.FirstName;
             resume.LastName = viewModel.LastName;
@@ -146,7 +150,9 @@ namespace RemoteHub.Pages.Resume
                     resume.grade += increment;
                 }
             }
-            await _context.SaveChangesAsync();
+
+            await _repository.UpdateResume(resume);
+
             @TempData["NewAlertMessage"] = "Your resume was successfully updated!";
 
             return RedirectToPage("view", new { Id = resume.ResumeId });

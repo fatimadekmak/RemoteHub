@@ -5,24 +5,24 @@ using RemoteHub.Services;
 using Azure;
 using Microsoft.AspNetCore.Mvc;
 using RemoteHub.Models;
+using NuGet.Protocol.Core.Types;
 
 
 namespace RemoteHub.Pages.Resume
 {
     public class DownloadModel : PageModel
     {
-
-        private readonly AppDBContext _context; 
+        private readonly DBRepository _repository;
         private readonly GeneratePdfService _generatepdf;
-        public DownloadModel(AppDBContext context, GeneratePdfService generatePdfService)
+        public DownloadModel(DBRepository repository, GeneratePdfService generatePdfService)
         {
-            _context = context;
+            _repository = repository;
             _generatepdf = generatePdfService;
         }
         public Models.Resume resume { get; set; }
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            resume = await _context.Resumes.Include(r => r.skills).SingleOrDefaultAsync(r => r.ResumeId == id);
+            resume = _repository.GetResumeWithSkillsById(id);
             string fileName = "" + resume.FirstName + resume.LastName + resume.ResumeId + "_Resume.pdf";
             string filePath = "wwwroot/resumes/" + fileName;
 

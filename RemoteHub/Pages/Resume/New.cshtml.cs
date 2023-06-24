@@ -10,12 +10,17 @@ namespace RemoteHub.Pages.Resume
 {
     public class NewModel : PageModel
     {
+        private readonly DBRepository _repository;
+        public List<Skill> Skills { get; set; }
+        public NewModel(DBRepository repository)
+        {
+            _repository = repository;
+            Skills = _repository.GetAllSkills();
+        }
         [BindProperty(Name = "viewModel")]
         public ResumeBindingModel bindingModel { get; set; }
         public ResumeViewModel viewModel { get; set; }
 
-        public AppDBContext _context { get; set; }
-        public List<Skill> Skills { get; set; }
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
         {
@@ -37,16 +42,12 @@ namespace RemoteHub.Pages.Resume
         };
 
         public string[] Genders = new[] { "Male", "Female" };
-        public NewModel(AppDBContext context)
-        {
-            _context = context;
-            Skills = _context.Skills.ToList();
-        }
+        
         public void OnGet()
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (bindingModel.ProfileImage!=null && ImageUploadService.CheckExtensionValidity(bindingModel.ProfileImage) == false)
             {
@@ -100,9 +101,11 @@ namespace RemoteHub.Pages.Resume
                     resume.grade += increment;
                 }
             }
-            _context.Resumes.Add(resume);
-            _context.SaveChanges();
+
+            await _repository.AddResume(resume);
+
             @TempData["NewAlertMessage"] = "Your resume was successfully created.";
+
             return RedirectToPage("view", new { Id = resume.ResumeId } );
         }
     }

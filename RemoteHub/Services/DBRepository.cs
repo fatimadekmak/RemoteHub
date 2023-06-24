@@ -5,10 +5,10 @@ using RemoteHub.Models;
 
 namespace RemoteHub.Services
 {
-    public class Repository
+    public class DBRepository
     {
         private readonly AppDBContext _context;
-        public Repository(AppDBContext context)
+        public DBRepository(AppDBContext context)
         {
             _context = context;
         }
@@ -34,17 +34,17 @@ namespace RemoteHub.Services
             await _context.SaveChangesAsync();
         }
 
-        public Resume GetResumeWithSkillsById(int id)
+        public Resume GetResumeWithSkillsById(int? id)
         {
             return _context.Resumes.Include(r => r.skills).FirstOrDefault(m => m.ResumeId == id);
         }
 
-        public Resume GetResumeById(int id)
+        public Resume GetResumeById(int? id)
         {
             return _context.Resumes.FirstOrDefault(m => m.ResumeId == id);
         }
 
-        public async Task DeleteResume(int id)
+        public async Task DeleteResume(int? id)
         {
             var resume = GetResumeById(id);
 
