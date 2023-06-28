@@ -110,17 +110,6 @@ namespace RemoteHub.Pages.Resume
             }
             if (!ModelState.IsValid)
             {
-                foreach (var modelStateEntry in ModelState)
-                {
-                    string key = modelStateEntry.Key; // Field/property name
-                    var errors = modelStateEntry.Value.Errors; // Collection of errors for the field/property
-
-                    foreach (var error in errors)
-                    {
-                        string errorMessage = error.ErrorMessage; // Error message
-                        Console.WriteLine($"Error in {key}: {errorMessage}");
-                    }
-                }
                 return Page();
             }
 
