@@ -11,7 +11,7 @@ namespace RemoteHub.Pages.Resume
         public Models.Resume bindingModel { get; set; }
         [BindProperty(SupportsGet = true)]
         public List<bool> SkillsCheckboxes { get; set; }
-        public List<Skill> Skills { get; set; }
+        public List<Skill> AllSkills { get; set; }
 
         public readonly DBRepository _repository;
         public RedirectionPageModel(DBRepository repository)
@@ -22,7 +22,7 @@ namespace RemoteHub.Pages.Resume
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Skills = _repository.GetAllSkills();
+            AllSkills = _repository.GetAllSkills();
             var increment = 0;
             if (bindingModel.Gender.Equals("Female"))
             {
@@ -38,8 +38,8 @@ namespace RemoteHub.Pages.Resume
             {
                 if (SkillsCheckboxes[i] == true)
                 {
-                    //need to save the corresponding Skill[i] as a skill in skills list
-                    bindingModel.skills.Add(Skills[i]);
+                    //need to save the corresponding AllSkills[i] as a skill in skills list
+                    bindingModel.skills.Add(AllSkills[i]);
                     bindingModel.grade += increment;
                 }
             }

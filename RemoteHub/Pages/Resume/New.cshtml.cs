@@ -11,7 +11,7 @@ namespace RemoteHub.Pages.Resume
     public class NewModel : PageModel
     {
         private readonly DBRepository _repository;
-        public List<Skill> Skills { get; set; }
+        public List<Skill> AllSkills { get; set; }
         public NewModel(DBRepository repository)
         {
             _repository = repository;
@@ -43,7 +43,7 @@ namespace RemoteHub.Pages.Resume
         
         public void OnGet()
         {
-            Skills = _repository.GetAllSkills();
+            AllSkills = _repository.GetAllSkills();
         }
 
         public async Task<IActionResult> OnPost()

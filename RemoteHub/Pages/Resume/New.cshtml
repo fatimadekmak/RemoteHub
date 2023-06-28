@@ -44,10 +44,10 @@
         <div class="form-group">
             <b>Select Your skills</b> <br />
 
-            @for (int i = 0; i < Model.Skills.Count; i++)
+            @for (int i = 0; i < Model.AllSkills.Count; i++)
             {
                 <input asp-for="viewModel.SkillsCheckboxes[i]" />
-                <label asp-for="@Model.Skills[i]" style="margin-right: 20px;">@Model.Skills[i].SkillName</label>
+                <label asp-for="@Model.AllSkills[i]" style="margin-right: 20px;">@Model.AllSkills[i].SkillName</label>
                 <span asp-validation-for="viewModel.SkillsCheckboxes[i]" class="text-danger"></span>
             }
 
