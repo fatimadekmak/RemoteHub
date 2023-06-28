@@ -26,7 +26,7 @@ namespace RemoteHub.Pages.Resume
         [BindProperty]
         public EditViewModel viewModel { get; set; }
         public Models.Resume Resume { get; set; } = default!;
-        public ICollection<Skill> SelectedSkills { get; set; }
+        public ICollection<Models.Skill> SelectedSkills { get; set; }
         /*public static string oldImage { get; set; }*/
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()

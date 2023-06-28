@@ -29,6 +29,12 @@ namespace RemoteHub.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddSkill(Skill skill)
+        {
+            _context.Skills.Add(skill);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateResume(Resume resume)
         {
             await _context.SaveChangesAsync();

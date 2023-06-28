@@ -1,0 +1,27 @@
+﻿@page
+@model RemoteHub.Pages.Skill.NewModel
+@{
+}
+
+<form asp-page="/skill/new" method="post">
+    <div class="form-group">
+        <label asp-for="Skill.SkillName" class="control-label"></label>
+        <input asp-for="Skill.SkillName" class="form-control" />
+        <span asp-validation-for="Skill.SkillName" class="text-danger"></span>
+    </div>
+    <br />
+    <div>
+        <button type="submit" class="btn btn-secondary">Create</button>
+    </div>
+</form>
+<br/>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
