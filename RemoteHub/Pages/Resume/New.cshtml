@@ -3,6 +3,15 @@
 @{
     ViewData["Title"] = "Add Your Resume";
 }
+@if (TempData["NewAlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["NewAlertMessage"]
+        <button type="button" class="close" data-dismiss="alert">
+            &times;
+        </button>
+    </div>
+}
 <h1>Fill Your information</h1>
 <hr />
 <form method="post" enctype="multipart/form-data">
@@ -51,7 +60,10 @@
                 <span asp-validation-for="viewModel.SkillsCheckboxes[i]" class="text-danger"></span>
             }
 
-        </div><br />
+        </div>
+        <a class="btn btn-primary" asp-area="" asp-page="/Skill/new">New Skill</a>
+        <br />
+    <br />
         <div class="form-group">
             <label asp-for="viewModel.Email"></label>
             <input asp-for="viewModel.Email" class="form-control" />

@@ -11,7 +11,7 @@ namespace RemoteHub.Pages.Resume
     public class NewModel : PageModel
     {
         private readonly DBRepository _repository;
-        public List<Skill> AllSkills { get; set; }
+        public List<Models.Skill> AllSkills { get; set; }
         public NewModel(DBRepository repository)
         {
             _repository = repository;

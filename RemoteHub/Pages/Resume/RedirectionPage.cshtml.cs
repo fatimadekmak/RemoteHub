@@ -11,9 +11,9 @@ namespace RemoteHub.Pages.Resume
         public Models.Resume bindingModel { get; set; }
         [BindProperty(SupportsGet = true)]
         public List<bool> SkillsCheckboxes { get; set; }
-        public List<Skill> AllSkills { get; set; }
+        public List<Models.Skill> AllSkills { get; set; }
 
-        public readonly DBRepository _repository;
+        private readonly DBRepository _repository;
         public RedirectionPageModel(DBRepository repository)
         {
             _repository = repository;
@@ -32,7 +32,7 @@ namespace RemoteHub.Pages.Resume
             {
                 increment = 5;
             }
-            bindingModel.skills = new List<Skill>();
+            bindingModel.skills = new List<Models.Skill>();
             bindingModel.grade = 0;
             for (int i = 0; i < SkillsCheckboxes.Count; i++)
             {
