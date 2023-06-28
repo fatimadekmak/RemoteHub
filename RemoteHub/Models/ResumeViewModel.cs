@@ -36,12 +36,12 @@ namespace RemoteHub.Models
         public string LastName { get; set; }
 
         [BindProperty, DataType(DataType.Date)]
-        public DateTime? Birthday { get; set; }
+        public DateTime? BirthDate { get; set; }
         [Required]
         public string Gender { get; set; }
         [Required]
         public String Nationality { get; set; }
-        public List<bool> Skills { get; set; }
+        public List<bool> SkillsCheckboxes { get; set; }
 
         [Required]
         [EmailAddress]

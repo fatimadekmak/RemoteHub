@@ -15,12 +15,10 @@ namespace RemoteHub.Pages.Resume
         public NewModel(DBRepository repository)
         {
             _repository = repository;
-            Skills = _repository.GetAllSkills();
         }
         [BindProperty(Name = "viewModel")]
         public ResumeBindingModel bindingModel { get; set; }
         public ResumeViewModel viewModel { get; set; }
-
 
         public IEnumerable<SelectListItem> Items { get; set; } = new List<SelectListItem>()
         {
@@ -45,6 +43,7 @@ namespace RemoteHub.Pages.Resume
         
         public void OnGet()
         {
+            Skills = _repository.GetAllSkills();
         }
 
         public async Task<IActionResult> OnPost()
@@ -53,11 +52,11 @@ namespace RemoteHub.Pages.Resume
             {
                 ModelState.AddModelError("viewModel.ProfileImage", "Please choose a valid image file.");
             }
-            if(DateService.checkIfPastDate(bindingModel.Birthday))
+            if(DateService.checkIfPastDate(bindingModel.BirthDate))
             {
                 ModelState.AddModelError("viewModel.Birthday", "Choose a date in the past");
             }
-            if(DateService.checkMinimumAge(bindingModel.Birthday))
+            if(DateService.checkMinimumAge(bindingModel.BirthDate))
             {
                 ModelState.AddModelError("viewModel.Birthday", "You should be at least 14 years old");
             }
@@ -70,43 +69,11 @@ namespace RemoteHub.Pages.Resume
             {
                 return Page();
             }
-            var resume = new Models.Resume
-            {
-                FirstName = bindingModel.FirstName,
-                LastName = bindingModel.LastName,
-                Email = bindingModel.Email,
-                BirthDate = bindingModel.Birthday,
-                Gender = bindingModel.Gender,
-                Nationality = bindingModel.Nationality,
-                PhoneNumber = bindingModel.PhoneNumber,
-                ProfilePicUrl = bindingModel.ProfileImage != null ? ImageUploadService.UploadFile(bindingModel.ProfileImage) : null,
-                skills = new List<Skill>(),
-                grade = 0
-            };
-            var increment = 0;
-            if(bindingModel.Gender.Equals("Female"))
-            {
-                increment = 10;
-            }
-            else
-            {
-                increment = 5;
-            }
-            for (int i =0; i< bindingModel.Skills.Count;i++)
-            {
-                if (bindingModel.Skills[i]==true)
-                {
-                    //need to save the corresponding skill[i] as a skill
-                    resume.skills.Add(Skills[i]);
-                    resume.grade += increment;
-                }
-            }
 
-            await _repository.AddResume(resume);
-
-            @TempData["NewAlertMessage"] = "Your resume was successfully created.";
-
-            return RedirectToPage("view", new { Id = resume.ResumeId } );
+            // data is Valid
+            bindingModel.ProfilePicUrl = bindingModel.ProfileImage != null ? ImageUploadService.UploadFile(bindingModel.ProfileImage) : null;
+            
+            return RedirectToPage("RedirectionPage", bindingModel);
         }
     }
     
