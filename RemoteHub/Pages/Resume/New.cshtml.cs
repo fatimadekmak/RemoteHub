@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RemoteHub.Pages.Resume
 {
+    [IgnoreAntiforgeryToken]
     public class NewModel : PageModel
     {
         private readonly DBRepository _repository;
@@ -15,6 +16,7 @@ namespace RemoteHub.Pages.Resume
         public NewModel(DBRepository repository)
         {
             _repository = repository;
+            AllSkills = _repository.GetAllSkills();
         }
         [BindProperty(Name = "viewModel")]
         public ResumeBindingModel bindingModel { get; set; }
@@ -43,11 +45,11 @@ namespace RemoteHub.Pages.Resume
         
         public void OnGet()
         {
-            AllSkills = _repository.GetAllSkills();
         }
 
         public async Task<IActionResult> OnPost()
         {
+            Console.WriteLine(bindingModel.BirthDate);
             if (bindingModel.ProfileImage!=null && ImageUploadService.CheckExtensionValidity(bindingModel.ProfileImage) == false)
             {
                 ModelState.AddModelError("viewModel.ProfileImage", "Please choose a valid image file.");
