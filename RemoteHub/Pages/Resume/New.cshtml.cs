@@ -49,16 +49,15 @@ namespace RemoteHub.Pages.Resume
 
         public async Task<IActionResult> OnPost()
         {
-            Console.WriteLine(bindingModel.BirthDate);
-            if (bindingModel.ProfileImage!=null && ImageUploadService.CheckExtensionValidity(bindingModel.ProfileImage) == false)
+            if (bindingModel.ProfileImage != null && ImageUploadService.CheckExtensionValidity(bindingModel.ProfileImage) == false)
             {
                 ModelState.AddModelError("viewModel.ProfileImage", "Please choose a valid image file.");
             }
-            if(DateService.checkIfPastDate(bindingModel.BirthDate))
+            if (DateService.checkIfPastDate(bindingModel.BirthDate))
             {
                 ModelState.AddModelError("viewModel.Birthday", "Choose a date in the past");
             }
-            if(DateService.checkMinimumAge(bindingModel.BirthDate))
+            if (DateService.checkMinimumAge(bindingModel.BirthDate))
             {
                 ModelState.AddModelError("viewModel.Birthday", "You should be at least 14 years old");
             }

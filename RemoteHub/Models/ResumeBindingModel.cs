@@ -12,7 +12,7 @@ namespace RemoteHub.Models
         public DateTime? BirthDate { get; set; }
         public string Gender { get; set; }
         public String Nationality { get; set; }
-        public List<bool> SkillsCheckboxes { get; set; }
+        public List<bool>? SkillsCheckboxes { get; set; }
         public string Email { get; set; }
         public string EmailConfirmation { get; set; }
         public string? PhoneNumber { get; set; }

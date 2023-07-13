@@ -20,7 +20,7 @@ namespace RemoteHub.Models
         public string Gender { get; set; }
         [Required]
         public String Nationality { get; set; }
-        public List<bool> SkillsCheckboxes { get; set; }
+        public List<bool>? SkillsCheckboxes { get; set; }
 
         [Required]
         [EmailAddress]
